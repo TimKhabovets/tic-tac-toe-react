@@ -6,16 +6,14 @@ import { StreamChat } from "stream-chat";
 
 const app = express();
 app.use(cors());
-app.use(express.json());
-
 app.use((req, res, next) => {
-
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', true);
   res.header('Access-Control-Allow-Credentials', true);
   res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   next();
 });
+app.use(express.json());
 
 const api_key = "rryejj45awqa";
 const api_secret = "da6ap7n7g3hxfrwc7c9653gzfj2xbnm3u2ncbneu28nn27dst2a3wcfbwd9q3gru";
@@ -28,6 +26,7 @@ app.post('/singup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 11);
     const token = serverClient.createToken(userId);
     res.json({ token, userId, firstName, lastName, username, hashedPassword });
+    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
   }
   catch (err) {
     res.json(err);
@@ -46,6 +45,7 @@ app.post('/login', async (req, res) => {
     if (passwordMatch) {
       res.json({ token, userId: users[0].id, firstName: users[0].firstName, lastName: users[0].lastName, username, });
     }
+    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
   }
   catch (err) {
     res.json(err);
