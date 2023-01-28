@@ -7,7 +7,7 @@ function SingUp({setIsAuth}) {
   const [user, setUser] = useState(null);
 
   const singUp = () => {
-    Axios.post("http://localhost:3001/singup", user).then((res) => {
+    Axios.post("https://tic-tac-toe-react-api.vercel.app/singup", user).then((res) => {
       const { token, userId, firstName, lastName, username, hashedPassword } = res.data;
       cookies.set("token", token);
       cookies.set("userId", userId);
