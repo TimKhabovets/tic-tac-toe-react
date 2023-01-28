@@ -8,19 +8,10 @@ const serverClient = StreamChat.getInstance(api_key, api_secret);
 
 export const singup = async (req, res) => {
   try {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
     const { firstName, lastName, username, password } = req.body;
     const userId = uuidv4();
     //const hashedPassword = await bcrypt.hash(password, 11);
     const token = serverClient.createToken(userId);
-    if (req.method === 'OPTIONS') {
-      return res.status(200).json(({
-        body: "OK"
-      }));
-    }
 res.json({ token, userId, firstName, lastName, username, password/*hashedPassword*/ });
     }
   catch (err) {
@@ -30,17 +21,8 @@ res.json({ token, userId, firstName, lastName, username, password/*hashedPasswor
   
 export const login = async (req, res) => {
   try {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
     const { username, password } = req.body;
     const { users } = await serverClient.queryUsers({ name: username });
-    if (req.method === 'OPTIONS') {
-      return res.status(200).json(({
-        body: "OK"
-      }));
-    }
     if (users.length === 0) {
       return res.json({ message: 'User not found' })
     }
