@@ -6,13 +6,6 @@ import { StreamChat } from "stream-chat";
 
 const app = express();
 app.use(cors());
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', true);
-  res.header('Access-Control-Allow-Credentials', true);
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  next();
-});
 app.use(express.json());
 
 const api_key = "rryejj45awqa";
@@ -21,12 +14,20 @@ const serverClient = StreamChat.getInstance(api_key, api_secret);
 
 app.post('/singup', async (req, res) => {
   try {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
     const { firstName, lastName, username, password } = req.body;
     const userId = uuidv4();
     const hashedPassword = await bcrypt.hash(password, 11);
     const token = serverClient.createToken(userId);
+    if (req.method === 'OPTIONS') {
+      return res.status(200).json(({
+        body: "OK"
+      }));
+    }
     res.json({ token, userId, firstName, lastName, username, hashedPassword });
-    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
   }
   catch (err) {
     res.json(err);
@@ -35,8 +36,17 @@ app.post('/singup', async (req, res) => {
 
 app.post('/login', async (req, res) => {
   try {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, OPTIONS, DELETE');
     const { username, password } = req.body;
     const { users } = await serverClient.queryUsers({ name: username });
+    if (req.method === 'OPTIONS') {
+      return res.status(200).json(({
+        body: "OK"
+      }));
+    }
     if (users.length === 0) {
       return res.json({ message: 'User not found' })
     }
@@ -45,7 +55,6 @@ app.post('/login', async (req, res) => {
     if (passwordMatch) {
       res.json({ token, userId: users[0].id, firstName: users[0].firstName, lastName: users[0].lastName, username, });
     }
-    if(req.method === 'OPTIONS') { return res.status(200).json(({ body: "OK" })) }
   }
   catch (err) {
     res.json(err);
