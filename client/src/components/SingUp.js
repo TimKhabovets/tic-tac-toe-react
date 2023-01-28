@@ -45,7 +45,7 @@ function SingUp({setIsAuth}) {
       }} 
       placeholder="password"
       />
-      <button onClick={singUp}> Sing Up </button>
+      <button onClick={singUp}><h5> Sing Up <span></span><span></span><span></span><span></span></h5></button>
     </div>
   )
 }

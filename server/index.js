@@ -5,9 +5,9 @@ import bcrypt from 'bcrypt';
 import { StreamChat } from "stream-chat";
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
+
 const api_key = "rryejj45awqa";
 const api_secret = "da6ap7n7g3hxfrwc7c9653gzfj2xbnm3u2ncbneu28nn27dst2a3wcfbwd9q3gru";
 const serverClient = StreamChat.getInstance(api_key, api_secret);
@@ -24,6 +24,7 @@ app.post('/singup', async (req, res) => {
     res.json(err);
   }
 });
+
 app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -31,10 +32,8 @@ app.post('/login', async (req, res) => {
     if (users.length === 0) {
       return res.json({ message: 'User not found' })
     }
-
     const token = serverClient.createToken(users[0].id);
     const passwordMatch = await bcrypt.compare(password, users[0].hashedPassword);
-
     if (passwordMatch) {
       res.json({ token, userId: users[0].id, firstName: users[0].firstName, lastName: users[0].lastName, username, });
     }
@@ -44,6 +43,6 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
+app.listen(5000, () => {
   console.log('Server is running');
 });

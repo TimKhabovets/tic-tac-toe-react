@@ -37,7 +37,7 @@ function LogIn({setIsAuth}) {
       }} 
       placeholder="password"
       />
-      <button onClick={logIn}> Log In </button>
+      <button onClick={logIn}><h5> Log In <span></span><span></span><span></span><span></span></h5></button>
     </div>
   )
 }
