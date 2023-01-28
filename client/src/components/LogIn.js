@@ -8,7 +8,7 @@ function LogIn({setIsAuth}) {
   const [password, setPassword] = useState('');
 
   const logIn = () => {
-    Axios.post("http://localhost:3001/login", {
+    Axios.post("https://tic-tac-toe-react-api.vercel.app/login", {
       username,
       password,
     }).then((res) => {
