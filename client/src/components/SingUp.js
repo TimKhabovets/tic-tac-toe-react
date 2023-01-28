@@ -8,13 +8,13 @@ function SingUp({setIsAuth}) {
 
   const singUp = () => {
     Axios.post("https://tic-tac-toe-react-api.vercel.app/singup", user).then((res) => {
-      const { token, userId, firstName, lastName, username, hashedPassword } = res.data;
+      const { token, userId, firstName, lastName, username, password /*hashedPassword*/ } = res.data;
       cookies.set("token", token);
       cookies.set("userId", userId);
       cookies.set("username", username);
       cookies.set("firstName", firstName);
       cookies.set("lastName", lastName);
-      cookies.set("hashedPassword", hashedPassword);
+      cookies.set(/*hashedPassword*/"password", password/*hashedPassword*/);
       setIsAuth(true);
     });
   }
